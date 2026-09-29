@@ -4,10 +4,15 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Notification.Management/Notification.Management.csproj">
+  <Project Path="Notification.Domain/Notification.Core.csproj" />
+  <Project Path="Notification.Service/Notification.Service.csproj" />
+  <Project Path="Notification.Test/Notification.Test.csproj" />
+  <Project Path="Notification.UI/Notification.UI (Package)/Notification.UI (Package).wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="a7c3dd81-e70d-4ec8-b331-bee19973dc34">
+    <Deploy />
+  </Project>
+  <Project Path="Notification.UI/Notification.UI/Notification.UI.csproj" Id="6fc728d5-1614-492e-bc38-0d747db0c98a">
     <Platform Solution="*|ARM64" Project="ARM64" />
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
-    <Deploy />
   </Project>
 </Solution>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Notification.UI.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Notification.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Notification.UI">
+
+    <Grid Padding="16" ColumnSpacing="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Form di pubblicazione -->
+        <StackPanel Grid.Column="0" Spacing="8">
+            <TextBox Header="Titolo" Text="{x:Bind ViewModel.Title, Mode=TwoWay}" />
+            <TextBox Header="Messaggio" Text="{x:Bind ViewModel.Message, Mode=TwoWay}"
+                  AcceptsReturn="True" TextWrapping="Wrap" Height="80" />
+            <ComboBox Header="Priorità" ItemsSource="{x:Bind Priorities}"
+                   SelectedItem="{x:Bind ViewModel.SelectedPriority, Mode=TwoWay}" />
+            <!--<Button Content="Pubblica" Command="{x:Bind ViewModel.PublishCommand}"
+                 IsEnabled="{x:Bind ViewModel.IsPublishing, Mode=OneWay, Converter={StaticResource InverseBoolConverter}}" />-->
+        </StackPanel>
+
+        <!-- Notifiche correnti + history 
+        <Grid Grid.Column="1" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Notifiche correnti" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <ListView ItemsSource="{x:Bind ViewModel.CurrentNotifications}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NotificationViewModel">
+                            <Border Background="{Binding PriorityBrushKey, Converter={StaticResource ResourceKeyToBrushConverter}}"
+                                 CornerRadius="4" Padding="8">
+                                <StackPanel>
+                                    <TextBlock Text="{x:Bind Title}" FontWeight="Bold" />
+                                    <TextBlock Text="{x:Bind Message}" TextWrapping="Wrap" />
+                                    <TextBlock Text="{x:Bind TimestampDisplay}" Opacity="0.7" FontSize="11" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="History" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <ListView ItemsSource="{x:Bind ViewModel.History}" />
+            </StackPanel>
+        </Grid>-->
+    </Grid>
+</Window>

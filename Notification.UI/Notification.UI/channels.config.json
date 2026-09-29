@@ -1,0 +1,7 @@
+{
+  "channels": {
+    "display": true,
+    "email": true,
+    "logFile": true
+  }
+}

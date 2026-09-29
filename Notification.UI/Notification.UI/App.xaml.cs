@@ -1,0 +1,85 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Shapes;
+using Notification.Core.Interface;
+using Notification.UI.ViewModels;
+using NotificationApp.Core.Interfaces;
+using NotificationApp.Services.Abstractions;
+using NotificationApp.Services.Channels;
+using NotificationApp.Services.Config;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Net.Mail;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace Notification.UI
+{
+    /// <summary>
+    /// Provides application-specific behavior to supplement the default Application class.
+    /// </summary>
+    public partial class App : Application
+    {
+        private Window? _window;
+        private IServiceProvider? _services;
+
+
+        /// <summary>
+        /// Initializes the singleton application object.  This is the first line of authored code
+        /// executed, and as such is the logical equivalent of main() or WinMain().
+        /// </summary>
+        public App()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Invoked when the application is launched.
+        /// </summary>
+        /// <param name="args">Details about the launch request and process.</param>
+        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        {
+            var services = new ServiceCollection();
+
+            // Infrastruttura condivisa
+            services.AddSingleton<IFileSystem, FileSystem>();
+            services.AddSingleton<ISmtpClient, StubSmtpClient>();
+         //   services.AddSingleton<IChannelConfigLoader, JsonChannelConfigLoader>();
+
+            // Canali: registrati come INotificationChannel, il dispatcher li riceve tutti insieme
+            services.AddSingleton<INotificationChannel, DisplayChannel>();
+            services.AddSingleton<INotificationChannel, EmailChannel>();
+            services.AddSingleton<INotificationChannel, LogFileChannel>();
+
+            //services.AddSingleton<INotificationDispatcher, NotificationDispatcher>();
+
+            // ViewModel/Window
+            //services.AddSingleton(DispatcherQueue.GetForCurrentThread());
+            //services.AddSingleton<IUiDispatcher, WinUiDispatcher>();
+            services.AddTransient<MainViewModel>();
+            services.AddTransient<MainWindow>();
+
+            _services = services.BuildServiceProvider();
+
+           // _services = servicesWithConfig.BuildServiceProvider();
+
+            _window = _services.GetRequiredService<MainWindow>();
+            _window.Activate();
+        }
+    }
+}
