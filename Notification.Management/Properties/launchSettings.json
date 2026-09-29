@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Notification.Management (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Notification.Management (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
