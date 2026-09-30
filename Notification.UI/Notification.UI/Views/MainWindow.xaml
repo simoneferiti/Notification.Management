@@ -55,6 +55,8 @@
 
             <StackPanel Grid.Row="1">
                 <TextBlock Text="History" Style="{StaticResource SubtitleTextBlockStyle}" />
+                <TextBox PlaceholderText="Cerca per titolo, messaggio o priorità..."
+         Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <ListView ItemsSource="{x:Bind ViewModel.History}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="vm:NotificationEventViewModel">

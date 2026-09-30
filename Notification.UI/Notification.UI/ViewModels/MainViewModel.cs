@@ -2,7 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Notification.Core.Interface;
 using Notification.Core.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Notification.UI.ViewModels;
@@ -66,10 +69,38 @@ public sealed partial class MainViewModel : ObservableObject
     {
         _uiDispatcher.Enqueue(() =>
         {
+            //var vm = new NotificationEventViewModel(notification);
+            //CurrentNotifications.Insert(0, vm);
+            //History.Insert(0, vm);
+
             var vm = new NotificationEventViewModel(notification);
             CurrentNotifications.Insert(0, vm);
-            History.Insert(0, vm);
+            _allHistory.Insert(0, vm);      // era: History.Insert(0, vm)
+            ApplyHistoryFilter();
         });
+    }
+
+    private readonly List<NotificationEventViewModel> _allHistory = new();
+
+  //  public ObservableCollection<NotificationEventViewModel> History { get; } = new();
+
+    [ObservableProperty]
+    private string _searchText = string.Empty;
+
+    partial void OnSearchTextChanged(string value) => ApplyHistoryFilter();
+
+    private void ApplyHistoryFilter()
+    {
+        History.Clear();
+        var query = string.IsNullOrWhiteSpace(SearchText)
+            ? _allHistory
+            : _allHistory.Where(n =>
+                n.Title.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                n.Message.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                n.Priority.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+
+        foreach (var vm in query)
+            History.Add(vm);
     }
 }
 
