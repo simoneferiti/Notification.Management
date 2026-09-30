@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Notification.UI.ViewModels;
 
-public sealed class NotificationViewModel
+public sealed class NotificationEventViewModel
 {
-    public NotificationViewModel(NotificationEvent notification)
+    public NotificationEventViewModel(NotificationEvent notification)
     {
         Notification = notification;
     }
@@ -21,14 +21,6 @@ public sealed class NotificationViewModel
     public string Priority => Notification.Priority.ToString();
     public string TimestampDisplay => Notification.Timestamp.ToString("dd/MM/yyyy HH:mm:ss");
 
-    /// <summary>
-    /// Nome della risorsa colore da usare in XAML (definita in App.xaml come
-    /// StaticResource), es. "PriorityLowBrush", "PriorityCriticalBrush".
-    /// Tenere la mappatura qui invece che nel code-behind della View.
-    /// </summary>
     public string PriorityBrushKey => $"Priority{Notification.Priority}Brush";
 }
 
-internal class NotificationEventViewModel
-{
-}

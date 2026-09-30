@@ -2,8 +2,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Notification.Core.Interface;
 using Notification.Core.Models;
+using NotificationApp.App.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +14,11 @@ namespace Notification.UI.ViewModels;
 
 public sealed partial class MainViewModel : ObservableObject
 {
-    //private readonly INotificationDispatcher _dispatcher;
-    //private readonly IUiDispatcher _uiDispatcher;
+    private readonly INotificationDispatcher _dispatcher;
+    private readonly IUiDispatcher _uiDispatcher;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PublishCommand))]
     private string _title = string.Empty;
 
     [ObservableProperty]
@@ -25,8 +28,18 @@ public sealed partial class MainViewModel : ObservableObject
     private NotificationPriority _selectedPriority = NotificationPriority.Low;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(PublishCommand))]
     private bool _isPublishing;
 
+    public ObservableCollection<NotificationEventViewModel> CurrentNotifications { get; } = new();
+    public ObservableCollection<NotificationEventViewModel> History { get; } = new();
+
+    public MainViewModel(INotificationDispatcher dispatcher, IUiDispatcher uiDispatcher)
+    {
+        _dispatcher = dispatcher;
+        _uiDispatcher = uiDispatcher;
+        _dispatcher.NotificationPublished += OnNotificationPublished;
+    }
 
     [RelayCommand(CanExecute = nameof(CanPublish))]
     private async Task PublishAsync()
@@ -35,7 +48,7 @@ public sealed partial class MainViewModel : ObservableObject
         try
         {
             var notification = NotificationEvent.Create(Title, Message, SelectedPriority);
-           // await _dispatcher.PublishAsync(notification);
+            await _dispatcher.PublishAsync(notification);
             Title = string.Empty;
             Message = string.Empty;
         }
@@ -56,12 +69,12 @@ public sealed partial class MainViewModel : ObservableObject
     /// </summary>
     private void OnNotificationPublished(object? sender, NotificationEvent notification)
     {
-        //_uiDispatcher.Enqueue(() =>
-        //{
-        //    var vm = new NotificationViewModel(notification);
-        //    CurrentNotifications.Insert(0, vm);
-        //    History.Insert(0, vm);
-        //});
+        _uiDispatcher.Enqueue(() =>
+        {
+            var vm = new NotificationEventViewModel(notification);
+            CurrentNotifications.Insert(0, vm);
+            History.Insert(0, vm);
+        });
     }
 }
 

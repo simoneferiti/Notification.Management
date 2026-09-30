@@ -1,4 +1,3 @@
-using System.IO.Abstractions;
 using Notification.Core.Interface;
 using Notification.Core.Models;
 
@@ -11,10 +10,10 @@ namespace NotificationApp.Services.Channels;
 /// </summary>
 public sealed class LogFileChannel : INotificationChannel
 {
-    private readonly IFileSystem _fileSystem;
+    private readonly IFileWriter _fileSystem;
     private readonly string _logFilePath;
 
-    public LogFileChannel(IFileSystem fileSystem, string logFilePath = "notifications.log")
+    public LogFileChannel(IFileWriter fileSystem, string logFilePath = "notifications.log")
     {
         _fileSystem = fileSystem;
         _logFilePath = logFilePath;
@@ -27,8 +26,6 @@ public sealed class LogFileChannel : INotificationChannel
     public async Task DeliverAsync(NotificationEvent notification, CancellationToken cancellationToken = default)
     {
         var line = $"{notification.Timestamp:O} [{notification.Priority}] {notification.Title} - {notification.Message}{Environment.NewLine}";
-        await using var stream = _fileSystem.File.Open(_logFilePath, FileMode.Append, FileAccess.Write);
-        await using var writer = new StreamWriter(stream);
-        await writer.WriteAsync(line);
+        await _fileSystem.AppendAllTextAsync(_logFilePath, line);
     }
 }

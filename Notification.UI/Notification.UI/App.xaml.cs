@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -8,15 +10,17 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Shapes;
 using Notification.Core.Interface;
+using Notification.Service;
 using Notification.UI.ViewModels;
+using NotificationApp.App.ViewModels;
 using NotificationApp.Core.Interfaces;
+using NotificationApp.Services;
 using NotificationApp.Services.Abstractions;
 using NotificationApp.Services.Channels;
 using NotificationApp.Services.Config;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Mail;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -52,31 +56,42 @@ namespace Notification.UI
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             var services = new ServiceCollection();
 
             // Infrastruttura condivisa
-            services.AddSingleton<IFileSystem, FileSystem>();
+            services.AddSingleton<IFileWriter, FileWriter>();
             services.AddSingleton<ISmtpClient, StubSmtpClient>();
-         //   services.AddSingleton<IChannelConfigLoader, JsonChannelConfigLoader>();
+            services.AddSingleton<IChannelConfigLoader, JsonChannelConfigLoader>();
 
             // Canali: registrati come INotificationChannel, il dispatcher li riceve tutti insieme
             services.AddSingleton<INotificationChannel, DisplayChannel>();
             services.AddSingleton<INotificationChannel, EmailChannel>();
             services.AddSingleton<INotificationChannel, LogFileChannel>();
 
-            //services.AddSingleton<INotificationDispatcher, NotificationDispatcher>();
+            services.AddSingleton<INotificationDispatcher, NotificationDispatcher>();
 
             // ViewModel/Window
-            //services.AddSingleton(DispatcherQueue.GetForCurrentThread());
-            //services.AddSingleton<IUiDispatcher, WinUiDispatcher>();
+            services.AddSingleton(DispatcherQueue.GetForCurrentThread());
+            services.AddSingleton<IUiDispatcher, WinUiDispatcher>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainWindow>();
 
             _services = services.BuildServiceProvider();
 
-           // _services = servicesWithConfig.BuildServiceProvider();
+            // La configurazione va caricata prima di creare il dispatcher: registriamo
+            // ChannelConfig come istanza già risolta, non come servizio lazy, perché
+            // il caricamento è asincrono e va fatto una sola volta all'avvio.
+            var configLoader = _services.GetRequiredService<IChannelConfigLoader>();
+            var channelConfig = await configLoader.LoadAsync();
+
+            var servicesWithConfig = new ServiceCollection();
+            foreach (var descriptor in services)
+                servicesWithConfig.Add(descriptor);
+            servicesWithConfig.AddSingleton(channelConfig);
+
+            _services = servicesWithConfig.BuildServiceProvider();
 
             _window = _services.GetRequiredService<MainWindow>();
             _window.Activate();
