@@ -1,9 +1,8 @@
 using Moq;
-using NotificationApp.Core.Config;
-using NotificationApp.Core.Interfaces;
-using NotificationApp.Core.Models;
+using Notification.Core.Config;
+using Notification.Core.Interface;
+using Notification.Core.Models;
 using NotificationApp.Services;
-using NUnit.Framework;
 
 namespace NotificationApp.Tests;
 
@@ -14,8 +13,8 @@ public class NotificationDispatcherTests
     {
         var mock = new Mock<INotificationChannel>();
         mock.Setup(c => c.Name).Returns(name);
-        mock.Setup(c => c.ShouldHandle(It.IsAny<Notification>())).Returns(shouldHandle);
-        mock.Setup(c => c.DeliverAsync(It.IsAny<Notification>(), It.IsAny<CancellationToken>()))
+        mock.Setup(c => c.ShouldHandle(It.IsAny<NotificationEvent>())).Returns(shouldHandle);
+        mock.Setup(c => c.DeliverAsync(It.IsAny<NotificationEvent>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         return mock;
     }
@@ -41,12 +40,12 @@ public class NotificationDispatcherTests
             new[] { enabledChannel.Object, disabledChannel.Object, notHandlingChannel.Object },
             config);
 
-        var notification = Notification.Create("T", "M", NotificationPriority.Medium);
+        var notification = NotificationEvent.Create("T", "M", NotificationPriority.Medium);
         await dispatcher.PublishAsync(notification);
 
         enabledChannel.Verify(c => c.DeliverAsync(notification, It.IsAny<CancellationToken>()), Times.Once);
-        disabledChannel.Verify(c => c.DeliverAsync(It.IsAny<Notification>(), It.IsAny<CancellationToken>()), Times.Never);
-        notHandlingChannel.Verify(c => c.DeliverAsync(It.IsAny<Notification>(), It.IsAny<CancellationToken>()), Times.Never);
+        disabledChannel.Verify(c => c.DeliverAsync(It.IsAny<NotificationEvent>(), It.IsAny<CancellationToken>()), Times.Never);
+        notHandlingChannel.Verify(c => c.DeliverAsync(It.IsAny<NotificationEvent>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Test]
@@ -55,10 +54,10 @@ public class NotificationDispatcherTests
         var config = new ChannelConfig { Channels = new Dictionary<string, bool> { ["display"] = true } };
         var dispatcher = new NotificationDispatcher(new[] { CreateChannelMock("display").Object }, config);
 
-        Notification? raised = null;
+        NotificationEvent? raised = null;
         dispatcher.NotificationPublished += (_, n) => raised = n;
 
-        var notification = Notification.Create("T", "M", NotificationPriority.High);
+        var notification = NotificationEvent.Create("T", "M", NotificationPriority.High);
         await dispatcher.PublishAsync(notification);
 
         Assert.That(dispatcher.History, Does.Contain(notification));
@@ -69,7 +68,7 @@ public class NotificationDispatcherTests
     public async Task PublishAsync_UnCanaleCheFalliscePermetteAgliAltriDiConsegnare()
     {
         var failingChannel = CreateChannelMock("email");
-        failingChannel.Setup(c => c.DeliverAsync(It.IsAny<Notification>(), It.IsAny<CancellationToken>()))
+        failingChannel.Setup(c => c.DeliverAsync(It.IsAny<NotificationEvent>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException("SMTP non raggiungibile"));
         var workingChannel = CreateChannelMock("display");
 
@@ -79,7 +78,7 @@ public class NotificationDispatcherTests
         };
         var dispatcher = new NotificationDispatcher(new[] { failingChannel.Object, workingChannel.Object }, config);
 
-        var notification = Notification.Create("T", "M", NotificationPriority.Critical);
+        var notification = NotificationEvent.Create("T", "M", NotificationPriority.Critical);
 
         Assert.DoesNotThrowAsync(() => dispatcher.PublishAsync(notification));
         workingChannel.Verify(c => c.DeliverAsync(notification, It.IsAny<CancellationToken>()), Times.Once);

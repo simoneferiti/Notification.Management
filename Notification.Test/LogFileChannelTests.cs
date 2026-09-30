@@ -1,34 +1,35 @@
-//using Notification.Core.Models;
-//using Notification.Test;
-//using NotificationApp.Services.Channels;
-//using NUnit.Framework;
+using Notification.Core.Models;
+using Notification.Test;
+using Notification.Test.Fake;
+using NotificationApp.Services.Channels;
+using NUnit.Framework;
 
 
-//namespace NotificationApp.Tests;
+namespace NotificationApp.Tests;
 
-//[TestFixture]
-//public class LogFileChannelTests
-//{
-//    [Test]
-//    public async Task DeliverAsync_ScriveLaRigaNelFileDiLogSimulato()
-//    {
-//        var mockFileSystem = FakeFileWriter;
-//        var channel = new LogFileChannel(mockFileSystem, "notifications.log");
-//        var notification = NotificationEvent.Create("Backup completato", "Backup notturno OK", NotificationPriority.Low);
+[TestFixture]
+public class LogFileChannelTests
+{
+    [Test]
+    public async Task DeliverAsync_ScriveLaRigaNelFileDiLogSimulato()
+    {
+        var fakeWriter = new FakeFileWriter();
+        var channel = new LogFileChannel(fakeWriter, "notifications.log");
+        var notification = NotificationEvent.Create("Backup completato", "Backup notturno OK", NotificationPriority.Low);
 
-//        await channel.DeliverAsync(notification);
+        await channel.DeliverAsync(notification);
 
-//        var content = mockFileSystem.File.ReadAllText("notifications.log");
-//        Assert.That(content, Does.Contain("Backup completato"));
-//        Assert.That(content, Does.Contain("Low"));
-//    }
+        var content = fakeWriter.ReadAllTextAsync("notifications.log");
+        Assert.That(await content, Does.Contain("Backup completato"));
+        Assert.That(await content, Does.Contain("Low"));
+    }
 
-//    [Test]
-//    public void ShouldHandle_GestisceSempreQualsiasiPriorita()
-//    {
-//        var channel = new LogFileChannel(new MockFileSystem());
-//        var notification = NotificationEvent.Create("T", "M", NotificationPriority.Critical);
+    [Test]
+    public void ShouldHandle_GestisceSempreQualsiasiPriorita()
+    {
+        var channel = new LogFileChannel(new FakeFileWriter());
+        var notification = NotificationEvent.Create("T", "M", NotificationPriority.Critical);
 
-//        Assert.That(channel.ShouldHandle(notification), Is.True);
-//    }
-//}
+        Assert.That(channel.ShouldHandle(notification), Is.True);
+    }
+}

@@ -1,7 +1,7 @@
 using Microsoft.UI.Dispatching;
 using System;
 
-namespace Notification.UI.ViewModels;
+namespace Notification.ViewModels;
 
 /// <summary>Implementazione reale: inoltra al DispatcherQueue della finestra WinUI.</summary>
 public sealed class WinUiDispatcher : IUiDispatcher

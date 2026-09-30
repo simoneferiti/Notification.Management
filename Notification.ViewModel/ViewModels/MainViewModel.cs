@@ -5,7 +5,7 @@ using Notification.Core.Models;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Notification.UI.ViewModels;
+namespace Notification.ViewModels;
 
 public sealed partial class MainViewModel : ObservableObject
 {

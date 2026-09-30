@@ -14,7 +14,7 @@ public sealed class JsonChannelConfigLoader : IChannelConfigLoader
     private readonly IFileWriter _fileSystem;
     private readonly string _configPath;
 
-    public JsonChannelConfigLoader(IFileWriter fileSystem, string configPath = "channels.config.json")
+    public JsonChannelConfigLoader(IFileWriter fileSystem, string configPath = "C:\\Users\\Utente\\source\\repos\\Notification.Management\\channels.config.json")
     {
         _fileSystem = fileSystem;
         _configPath = configPath;

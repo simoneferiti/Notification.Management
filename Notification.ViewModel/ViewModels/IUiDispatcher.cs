@@ -1,6 +1,6 @@
 using System;
 
-namespace Notification.UI.ViewModels;
+namespace Notification.ViewModels;
 
 /// <summary>
 /// Astrazione minima sopra Microsoft.UI.Dispatching.DispatcherQueue.

@@ -1,6 +1,6 @@
 ﻿using Notification.Core.Models;
 
-namespace Notification.UI.ViewModels;
+namespace Notification.ViewModels;
 
 public sealed class NotificationEventViewModel
 {

@@ -1,11 +1,8 @@
 ﻿using Notification.Core.Interface;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Notification.Test;
+namespace Notification.Test.Fake;
 
-file sealed class FakeFileWriter : IFileWriter
+public sealed class FakeFileWriter : IFileWriter
 {
     public Dictionary<string, string> Files { get; } = new();
     public bool Exists(string path) => Files.ContainsKey(path);
