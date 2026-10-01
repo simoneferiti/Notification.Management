@@ -1,6 +1,6 @@
 using Notification.Core.Models;
 using Notification.Test.Fake;
-using NotificationApp.Services.Channels;
+using Notification.Services.Channels;
 
 
 namespace Notification.Test;

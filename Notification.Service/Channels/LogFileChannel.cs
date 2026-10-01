@@ -1,13 +1,8 @@
 using Notification.Core.Interface;
 using Notification.Core.Models;
 
-namespace NotificationApp.Services.Channels;
+namespace Notification.Services.Channels;
 
-/// <summary>
-/// Canale LogFile: scrive ogni notifica su un file .log con timestamp e priorità.
-/// Usa IFileSystem (System.IO.Abstractions) invece di File.* statico, così nei
-/// test si può iniettare un MockFileSystem senza toccare il disco reale.
-/// </summary>
 public sealed class LogFileChannel : INotificationChannel
 {
     private readonly IFileWriter _fileSystem;

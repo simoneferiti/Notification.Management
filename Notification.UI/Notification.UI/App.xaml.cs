@@ -5,11 +5,11 @@ using Microsoft.UI.Xaml;
 using Notification.Core.Interface;
 using Notification.Service;
 using Notification.ViewModels;
-using NotificationApp.Core.Interfaces;
-using NotificationApp.Services;
-using NotificationApp.Services.Abstractions;
-using NotificationApp.Services.Channels;
-using NotificationApp.Services.Config;
+using Notification.Core.Interfaces;
+using Notification.Services;
+using Notification.Services.Abstractions;
+using Notification.Services.Channels;
+using Notification.Services.Config;
 using System;
 
 // To learn more about WinUI, the WinUI project structure,

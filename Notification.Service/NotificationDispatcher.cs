@@ -3,7 +3,7 @@ using Notification.Core.Interface;
 using Notification.Core.Models;
 using System.Collections.Concurrent;
 
-namespace NotificationApp.Services;
+namespace Notification.Services;
 
 /// <summary>
 /// Implementazione di riferimento del dispatcher: riceve i canali via DI

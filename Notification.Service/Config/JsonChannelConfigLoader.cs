@@ -1,9 +1,9 @@
 using Notification.Core.Config;
 using Notification.Core.Interface;
-using NotificationApp.Core.Interfaces;
+using Notification.Core.Interfaces;
 using System.Text.Json;
 
-namespace NotificationApp.Services.Config;
+namespace Notification.Services.Config;
 
 /// <summary>
 /// Carica ChannelConfig da un file JSON (channels.config.json) tramite IFileSystem,

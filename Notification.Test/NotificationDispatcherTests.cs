@@ -2,7 +2,7 @@ using Moq;
 using Notification.Core.Config;
 using Notification.Core.Interface;
 using Notification.Core.Models;
-using NotificationApp.Services;
+using Notification.Services;
 
 namespace Notification.Test;
 

@@ -1,7 +1,7 @@
 using Moq;
 using Notification.Core.Models;
-using NotificationApp.Services.Abstractions;
-using NotificationApp.Services.Channels;
+using Notification.Services.Abstractions;
+using Notification.Services.Channels;
 
 namespace Notification.Test;
 

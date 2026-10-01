@@ -1,9 +1,9 @@
 using Notification.Core.Interface;
 using Notification.Core.Models;
-using NotificationApp.Services.Abstractions;
+using Notification.Services.Abstractions;
 
 
-namespace NotificationApp.Services.Channels;
+namespace Notification.Services.Channels;
 
 /// <summary>
 /// Canale Email: si attiva SOLO per priorità High o Critical (requisito esplicito).

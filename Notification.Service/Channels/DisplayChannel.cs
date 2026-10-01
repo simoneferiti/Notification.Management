@@ -1,7 +1,7 @@
 using Notification.Core.Interface;
 using Notification.Core.Models;
 
-namespace NotificationApp.Services.Channels;
+namespace Notification.Services.Channels;
 
 
 public sealed class DisplayChannel : INotificationChannel

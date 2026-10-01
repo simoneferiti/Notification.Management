@@ -1,10 +1,5 @@
-namespace NotificationApp.Services.Abstractions;
+namespace Notification.Services.Abstractions;
 
-/// <summary>
-/// Abstraction minima sopra il client SMTP reale, per poter fare mock nei test
-/// senza inviare email vere. In produzione l'implementazione userebbe
-/// System.Net.Mail.SmtpClient o un provider esterno (SendGrid, ecc.).
-/// </summary>
 public interface ISmtpClient
 {
     Task SendAsync(string subject, string body, CancellationToken cancellationToken = default);
