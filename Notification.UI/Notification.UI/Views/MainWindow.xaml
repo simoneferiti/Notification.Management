@@ -42,9 +42,9 @@
                             <Border Background="{Binding PriorityBrushKey, Converter={StaticResource ResourceKeyToBrushConverter}}"
                                  CornerRadius="4" Padding="8">
                                 <StackPanel>
-                                    <TextBlock Text="{x:Bind Title}" FontWeight="Bold" />
-                                    <TextBlock Text="{x:Bind Message}" TextWrapping="Wrap" />
-                                    <TextBlock Text="{x:Bind TimestampDisplay}" Opacity="0.7" FontSize="11" />
+                                    <TextBlock Text="{x:Bind Title}" FontWeight="Bold" Foreground="Black" />
+                                    <TextBlock Text="{x:Bind Message}" TextWrapping="Wrap" Foreground="Black" />
+                                    <TextBlock Text="{x:Bind TimestampDisplay}" Opacity="0.7" FontSize="11" Foreground="Black"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -72,9 +72,9 @@
                                 <Border Grid.Column="1"
                             Background="{Binding PriorityBrushKey, Converter={StaticResource ResourceKeyToBrushConverter}}"
                             CornerRadius="4" Padding="6,2">
-                                    <TextBlock Text="{x:Bind Priority}" FontSize="12" />
+                                    <TextBlock Text="{x:Bind Priority}" FontSize="12" Foreground="Black" />
                                 </Border>
-                                <TextBlock Grid.Column="2" Text="{x:Bind Title}"
+                                <TextBlock Grid.Column="2" Text="{x:Bind Title}" Foreground="LightGray"
                                 TextTrimming="CharacterEllipsis" />
                             </Grid>
                         </DataTemplate>
