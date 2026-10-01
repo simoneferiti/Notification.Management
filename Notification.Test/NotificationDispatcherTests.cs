@@ -4,7 +4,7 @@ using Notification.Core.Interface;
 using Notification.Core.Models;
 using NotificationApp.Services;
 
-namespace NotificationApp.Tests;
+namespace Notification.Test;
 
 [TestFixture]
 public class NotificationDispatcherTests

@@ -4,7 +4,7 @@ using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Notification.Core.Interface;
 using Notification.Service;
-using Notification.UI.ViewModels;
+using Notification.ViewModels;
 using NotificationApp.Core.Interfaces;
 using NotificationApp.Services;
 using NotificationApp.Services.Abstractions;

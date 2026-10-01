@@ -1,6 +1,6 @@
 using Microsoft.UI.Xaml;
 using Notification.Core.Models;
-using Notification.UI.ViewModels;
+using Notification.ViewModels;
 using System;
 using Windows.UI.Popups;
 

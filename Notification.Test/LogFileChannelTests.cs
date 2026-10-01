@@ -1,11 +1,9 @@
 using Notification.Core.Models;
-using Notification.Test;
 using Notification.Test.Fake;
 using NotificationApp.Services.Channels;
-using NUnit.Framework;
 
 
-namespace NotificationApp.Tests;
+namespace Notification.Test;
 
 [TestFixture]
 public class LogFileChannelTests

@@ -2,9 +2,8 @@ using Moq;
 using Notification.Core.Models;
 using NotificationApp.Services.Abstractions;
 using NotificationApp.Services.Channels;
-using NUnit.Framework;
 
-namespace NotificationApp.Tests;
+namespace Notification.Test;
 
 [TestFixture]
 public class EmailChannelTests

@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Notification.Domain\Notification.Core.csproj" />
     <ProjectReference Include="..\..\Notification.Service\Notification.Service.csproj" />
+    <ProjectReference Include="..\..\Notification.ViewModel\Notification.ViewModel.csproj" />
   </ItemGroup>
 
     <!-- Publish Properties -->
