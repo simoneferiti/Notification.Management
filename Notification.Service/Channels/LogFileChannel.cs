@@ -13,7 +13,7 @@ public sealed class LogFileChannel : INotificationChannel
     private readonly IFileWriter _fileSystem;
     private readonly string _logFilePath;
 
-    public LogFileChannel(IFileWriter fileSystem, string logFilePath = "C:\\Users\\Utente\\source\\repos\\Notification.Management\\notifications.log")
+    public LogFileChannel(IFileWriter fileSystem, string logFilePath = "notifications.log")
     {
         _fileSystem = fileSystem;
         _logFilePath = logFilePath;
